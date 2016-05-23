@@ -55,6 +55,11 @@ if [ -n "${CERT_SERVICE+1}" ]; then
     sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
     sed -i "s/#letsencrypt# //g;" /etc/nginx/conf.d/proxy.conf
 fi
+
+if [ -n "${WEB_SOCKETS+1}" ]; then
+    sed -i "s/#websockets# //g;" /etc/nginx/conf.d/proxy.conf
+fi
+
 # Tell nginx the address and port of the service to proxy to
 sed -i "s|{{TARGET_SERVICE}}|${TARGET_SERVICE}|" /etc/nginx/conf.d/proxy.conf
 
