@@ -3,11 +3,13 @@ services:
 - docker
 script:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export COMMIT="latest"
   - export REPO=spunkedy/docker-nginx-ssl-proxy
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - echo "repo ${REPO}"
   - echo "commit ${COMMIT}"
   - echo "tag ${TAG}"
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
