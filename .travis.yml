@@ -1,6 +1,8 @@
 sudo: required
 services:
 - docker
+script: docker build -f Dockerfile -t $REPO:$COMMIT .
+
 env:
   global:
   - secure: Ml6Ue9FrZ2WIpjC74Y8tM2ro4q7UqdFiDgePNS89TVVPSZj1TbMYBObkb13cDPA3zcPy103kgCxfJ8dM41RwaHyw61cfYIK4wyzIQ0WJJuctjOB1iNzY+tFwotCdKIs7/6CUMZctDDrevAY0xbcjbJyQGIfQOmUjz8EsbHi5egsadFCS0TZeU6xYHz37STMMg7GCz9ppQ0cgWKSjbkcbFu1M39M/pHu6r0eysfJd+7slY2FAd/PU5BBz6hlwKxOhdGC/18hd2/Cawf6Wv7ElN3RD0VJJZs4HHx3pyAwTVtj/Cmr4EkQnMW1oIgLbudRt7p7XIYelB/Wk+jAbP1sYT4QPQqyXASpbDnt7slw7H2Z+7kUb9e0Nz4MyWEdLlwysxS3D4Z7ivHXFn8gFuoLUQ8kQffIiTladtjrO2oBYvelQcJsjquoaRKasfLj7N39i3pb2xbXEmcHOoYf4FRrOW+XExjGyKwAXdiGKlE2zll9n9PNlYYzYfOVJz1uR52QtO7uPlZPtfDKfmSi2qQmLeazN8+2+eIUlXB38TtOSiRvp5X+lrBHfLV5petUMcDx+fWawV+XwieSlAdshaNrRi04hm7MAG1ZYj7Ft9voAuDeM2/BLh7sppWXjNguoHEJ3ecx1CFlPhImuYuUYb/BudyoPRcC+yFSh9EXJHA/FZZg=
@@ -10,8 +12,7 @@ env:
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=spunkedy/docker-nginx-ssl-proxy
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`  - 
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
